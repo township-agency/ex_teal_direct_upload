@@ -16,7 +16,6 @@ defmodule ExTealDirectUpload.MixProject do
       description: description(),
       docs: docs(),
       name: "ExTealDirectUpload",
-      organization: "motel",
       source_url: @source
     ]
   end
@@ -45,7 +44,7 @@ defmodule ExTealDirectUpload.MixProject do
 
   defp package do
     [
-      files: ~w(lib .formatter.exs mix.exs README* LICENSE*),
+      files: ~w(lib .formatter.exs mix.exs README*),
       maintainers: [
         "Alexandrea Defreitas",
         "Caleb Oller",
@@ -54,6 +53,7 @@ defmodule ExTealDirectUpload.MixProject do
         "Scott Taylor"
       ],
       licenses: ["MIT"],
+      organization: "motel",
       links: %{"GitLab" => @source}
     ]
   end
