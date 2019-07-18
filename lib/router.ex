@@ -32,11 +32,6 @@ defmodule ExTealDirectUpload.Router do
     super(conn, opts)
   end
 
-  get "/" do
-    conn
-    |> send_resp(200, "HELLO")
-  end
-
   post "/sign" do
     file_name = conn.params["fileName"]
     mimetype = conn.params["contentType"]

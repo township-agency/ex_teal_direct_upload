@@ -1,7 +1,7 @@
 defmodule ExTealDirectUpload.MixProject do
   use Mix.Project
 
-  @version "0.1.0"
+  @version "0.3.0"
 
   @source "https://gitlab.motel-lab.com/teal/ex_teal_direct_upload"
 
@@ -30,7 +30,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_teal, "~> 0.1", organization: "motel"},
+      {:ex_teal, "~> 0.3", organization: "motel"},
       {:plug, "~> 1.6"},
       {:jason, "~> 1.0"},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
@@ -44,7 +44,7 @@ defmodule ExTealDirectUpload.MixProject do
 
   defp package do
     [
-      files: ~w(lib .formatter.exs mix.exs README*),
+      files: ~w(lib .formatter.exs mix.exs README* priv),
       maintainers: [
         "Alexandrea Defreitas",
         "Caleb Oller",

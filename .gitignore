@@ -21,4 +21,5 @@ erl_crash.dump
 
 # Ignore package tarball (built via "mix hex.build").
 teal_direct_upload-*.tar
+/assets/node_modules/
 
