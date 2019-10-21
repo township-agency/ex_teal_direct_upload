@@ -122,12 +122,12 @@ export default {
     this.$smoothReflow();
     this.value = this.field.value;
 
-    this.field.fill = form => {
+    this.field.fill = formData => {
       if (this.isEditing) {
-        form[this.field.attribute] = null;
+        formData.append(this.field.attribute, null);
         return;
       }
-      form[this.field.attribute] = this.value;
+      formData.append(this.field.attribute, this.value);
     };
 
     if (!this.field.value) {
