@@ -9,7 +9,8 @@ defmodule ExTealDirectUpload.UploaderTest do
     upload = %Uploader{
       file_name: "file.jpg",
       mimetype: "image/jpeg",
-      path: "path/in/bucket"
+      path: "path/in/bucket",
+      acl: "public-read"
     }
 
     result = upload |> Uploader.presigned_json() |> Jason.decode!()

@@ -7,16 +7,25 @@
 
           <div v-if="hasValue" class="my-2 block">
             <a
-              :href="s3DirectUrl"
+              v-if="canShowLink"
+              :href="directUrl"
               target="_blank"
               class="btn btn-default btn-primary btn-icon-inline"
             >
               <icon type="link" class="mr-2" /> <span>Link</span>
             </a>
 
-            <a class="btn btn-default btn-icon-inline" @click="showEdit">
+            <a class="btn btn-default btn-secondary btn-icon-inline cursor" @click="showEdit">
               <icon type="edit" class="mr-2" /> <span>Edit</span>
             </a>
+
+            <a class="btn btn-default btn-danger btn-icon-inline" @click="deleteFile">
+              <icon type="delete" class="mr-2" /> <span>Delete</span>
+            </a>
+
+            <span class="ml-2" v-if="!canShowLink">
+              {{currentLabel}}
+            </span>
           </div>
         </div>
       </transition>
@@ -24,7 +33,6 @@
         <div v-if="isEditing" class="form-file mr-4 h-20">
           <input
             ref="fileField"
-            :dusk="field.attribute"
             :id="idAttr"
             class="form-file-input"
             type="file"
@@ -57,12 +65,13 @@ export default {
 
   data: () => ({
     file: null,
-    label: "no file selected",
+    label: "No File Selected",
     fileName: "",
     value: null,
     isEditing: false,
     uploadProgress: 0,
-    isUploading: false
+    isUploading: false,
+    hasChanged: false
   }),
 
   computed: {
@@ -109,11 +118,27 @@ export default {
       return this.field.options.type == "imgix";
     },
 
+    canShowLink() {
+      return this.isImgix || this.canShowS3;
+    },
+
+    canShowS3() {
+      return !this.field.options.presign_s3 || (this.field.options.presigned_url && !this.hasChanged);
+    },
+
     showPreview() {
       return this.hasValue && this.isImgix && !this.isEditing;
     },
 
-    s3DirectUrl() {
+    directUrl() {
+      if(this.isImgix) {
+        return this.imgixUrl;
+      }
+
+      if(this.field.options.presign_s3) {
+        return this.field.options.presigned_url;
+      }
+
       return `//${this.field.options.s3_host}/${this.value}`;
     }
   },
@@ -146,6 +171,7 @@ export default {
       this.fileName = fileName;
 
       this.file = this.$refs.fileField.files[0];
+      this.hasChanged = true;
       this.signFileForUpload().then(() => {
         this.file = null;
       });
@@ -199,6 +225,14 @@ export default {
 
     cancelEdit() {
       this.isEditing = false;
+    },
+
+    deleteFile() {
+      this.value = null;
+      this.file = null;
+      this.hasChanged = true;
+      this.isEditing = true;
+      this.label = "No File Selected";
     }
   }
 };

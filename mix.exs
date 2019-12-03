@@ -23,7 +23,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger]
+      applications: [:logger]
     ]
   end
 
@@ -31,6 +31,9 @@ defmodule ExTealDirectUpload.MixProject do
   defp deps do
     [
       {:ex_teal, "~> 0.4", organization: "motel"},
+      {:ex_aws, "~> 2.0"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.15"},
       {:plug, "~> 1.6"},
       {:jason, "~> 1.0"},
       {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
