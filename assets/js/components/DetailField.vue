@@ -3,7 +3,7 @@
     <p v-if="field.value" slot="value" class="text-90">
       <img v-if="isImgix" :src="imgixUrl" class="block mb-2" />
       <a
-        :href="s3DirectUrl"
+        :href="directUrl"
         target="_blank"
         class="btn btn-default btn-primary btn-icon-inline"
       >
@@ -43,7 +43,15 @@ export default {
       return this.field.options.type == "imgix";
     },
 
-    s3DirectUrl() {
+    directUrl() {
+      if(this.isImgix) {
+        return this.imgixUrl;
+      }
+
+      if(this.field.options.presign_s3) {
+        return this.field.options.presigned_url;
+      }
+      
       return `//${this.field.options.s3_host}/${this.field.value}`;
     }
   }

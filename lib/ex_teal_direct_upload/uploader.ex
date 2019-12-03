@@ -43,7 +43,8 @@ defmodule ExTealDirectUpload.Uploader do
   - `acl` defaults to `public-read`
 
   """
-  defstruct file_name: nil, mimetype: nil, path: nil, acl: "public-read"
+
+  defstruct file_name: nil, mimetype: nil, path: nil, acl: nil
 
   @date_util Application.get_env(:ex_teal_direct_upload, :date_util, ExTealDirectUpload.DateUtil)
 
@@ -93,7 +94,7 @@ defmodule ExTealDirectUpload.Uploader do
 
   Returns a json object with `url` and `credentials` properties.
 
-  - `url` - the form action URL
+  - `url` - the form action sURL
   - `credentials` - name/value pairs for hidden input fields
 
   """
