@@ -18,11 +18,15 @@ defmodule ExTealDirectUpload.File do
     }
   end
 
-  def apply_options_for(%{options: %{presign_s3: true} = options, value: value} = field, _schema)
+  def apply_options_for(
+        %{options: %{presign_s3: true} = options, value: value} = field,
+        _schema,
+        _type
+      )
       when not is_nil(value) do
     {:ok, url} = ExTealDirectUpload.signed_url_for(field.value)
     %{field | options: Map.put(options, :presigned_url, url)}
   end
 
-  def apply_options_for(field, _schema), do: field
+  def apply_options_for(field, _schema, _type), do: field
 end
