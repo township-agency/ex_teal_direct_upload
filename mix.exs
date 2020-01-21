@@ -1,7 +1,7 @@
 defmodule ExTealDirectUpload.MixProject do
   use Mix.Project
 
-  @version "0.5.0"
+  @version "0.6.0"
 
   @source "https://gitlab.motel-lab.com/teal/ex_teal_direct_upload"
 
