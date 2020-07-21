@@ -4,10 +4,11 @@ defmodule ExTealDirectUpload.Imgix do
   a proxy for fetching the asset
   """
   use ExTeal.Field
-  import ExTealDirectUpload.FieldHelpers, only: [options: 0, custom_width_and_height: 3]
+  alias ExTealDirectUpload.FieldHelpers
 
   def component, do: "imgix-field"
 
-  @impl true
   def default_sortable, do: false
+
+  def options, do: FieldHelpers.options()
 end

@@ -3,13 +3,14 @@ defmodule ExTealDirectUpload.ImgixArray do
   A component for managing an array of imgix assets
   """
   use ExTeal.Field
-  import ExTealDirectUpload.FieldHelpers, only: [options: 0, custom_width_and_height: 3]
+  alias ExTealDirectUpload.FieldHelpers
   alias ExTeal.Field
 
   def component, do: "imgix-array-field"
 
-  @impl true
   def default_sortable, do: false
+
+  def options, do: FieldHelpers.options()
 
   @doc """
   Enable a draggable ui for the field, allowing a user to reorder the items in the array
