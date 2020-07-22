@@ -3,8 +3,9 @@ defmodule ExTealDirectUpload.ImgixArray do
   A component for managing an array of imgix assets
   """
   use ExTeal.Field
-  alias ExTealDirectUpload.FieldHelpers
+
   alias ExTeal.Field
+  alias ExTealDirectUpload.FieldHelpers
 
   def component, do: "imgix-array-field"
 
