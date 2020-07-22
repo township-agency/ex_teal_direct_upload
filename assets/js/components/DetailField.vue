@@ -1,15 +1,12 @@
 <template>
   <panel-item :field="field">
-    <p v-if="field.value" slot="value" class="text-90">
-      <img v-if="isImgix" :src="imgixUrl" class="block mb-2" />
-      <a
-        :href="directUrl"
-        target="_blank"
-        class="btn btn-default btn-primary btn-icon-inline"
-      >
-        <icon type="link" class="mr-2" /> <span>Link</span>
-      </a>
-    </p>
+    <template v-slot:value>
+      <imgix-image-detail v-if="field"
+        :field="field" 
+        :value="field.value" 
+        class="block pb-4"
+      />
+    </template>
   </panel-item>
 </template>
 
@@ -51,7 +48,7 @@ export default {
       if(this.field.options.presign_s3) {
         return this.field.options.presigned_url;
       }
-      
+
       return `//${this.field.options.s3_host}/${this.field.value}`;
     }
   }

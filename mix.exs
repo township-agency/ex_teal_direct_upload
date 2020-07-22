@@ -30,7 +30,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_teal, ">= 0.7.0", organization: "motel"},
+      {:ex_teal, ">= 0.8.0", organization: "motel"},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.15"},
@@ -50,9 +50,6 @@ defmodule ExTealDirectUpload.MixProject do
       files: ~w(lib .formatter.exs mix.exs README* priv),
       maintainers: [
         "Alexandrea Defreitas",
-        "Caleb Oller",
-        "Lydia Koller",
-        "Samina Khan",
         "Scott Taylor"
       ],
       licenses: ["MIT"],

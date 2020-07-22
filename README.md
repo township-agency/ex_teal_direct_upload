@@ -10,7 +10,7 @@ by adding `teal_imgix` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ex_teal_imgix, "~> 0.1.0"}
+    {:ex_teal_direct_upload, "~> 0.6.0"}
   ]
 end
 ```
