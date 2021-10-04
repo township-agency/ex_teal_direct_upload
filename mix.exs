@@ -9,7 +9,7 @@ defmodule ExTealDirectUpload.MixProject do
     [
       app: :ex_teal_direct_upload,
       version: @version,
-      elixir: "~> 1.7",
+      elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
@@ -30,7 +30,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_teal, ">= 0.8.0", organization: "motel"},
+      {:ex_teal, ">= 0.16.0", organization: "motel"},
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.15"},
