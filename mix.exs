@@ -1,7 +1,7 @@
 defmodule ExTealDirectUpload.MixProject do
   use Mix.Project
 
-  @version "0.7.0"
+  @version "0.8.0"
 
   @source "https://github.com/township-agency/ex_teal_direct_upload"
 
@@ -54,7 +54,7 @@ defmodule ExTealDirectUpload.MixProject do
       ],
       licenses: ["MIT"],
       organization: "motel",
-      links: %{"GitLab" => @source}
+      links: %{"GitHub" => @source}
     ]
   end
 
