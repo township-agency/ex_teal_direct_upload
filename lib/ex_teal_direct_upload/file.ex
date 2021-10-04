@@ -21,6 +21,7 @@ defmodule ExTealDirectUpload.File do
   def apply_options_for(
         %{options: %{presign_s3: true} = options, value: value} = field,
         _schema,
+        _conn,
         _type
       )
       when not is_nil(value) do
@@ -28,5 +29,5 @@ defmodule ExTealDirectUpload.File do
     %{field | options: Map.put(options, :presigned_url, url)}
   end
 
-  def apply_options_for(field, _schema, _type), do: field
+  def apply_options_for(field, _schema, _conn, _type), do: field
 end

@@ -11,21 +11,21 @@ env:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     strategy:
       matrix:
-        elixir: [1.10.2]
-        otp: [22.2.8]
+        elixir: ['1.10.3']
+        otp: ['22.2.8']
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Setup elixir
-      uses: actions/setup-elixir@v1
+      uses: erlef/setup-elixir@v1
       with:
-        elixir-version: ${{ matrix.elixir }} # Define the elixir version [required]
         otp-version: ${{ matrix.otp }} # Define the OTP version [required]
+        elixir-version: ${{ matrix.elixir }} # Define the elixir version [required]
 
     - name: Retrieve Mix Dependencies Cache
       uses: actions/cache@v1
@@ -36,24 +36,32 @@ jobs:
 
     - name: Install Mix Dependencies
       env:
-        MIX_HEX_KEY: ${{ secrets.HEX_API_KEY }}
+        HEX_API_KEY: ${{ secrets.HEX_API_KEY}}
+        MIX_ENV: test
       if: steps.mix-cache.outputs.cache-hit != 'true'
       run: |
-        mix hex.organization auth motel --key $MIX_HEX_KEY
+        mix hex.organization auth motel --key $HEX_API_KEY
         mix local.rebar --force
         mix local.hex --force
         mix deps.get
+        mix deps.compile
 
     - name: Elixir - Warning-Free Compile
       env:
         MIX_ENV: test
       run: mix compile --warnings-as-errors
-    
-    - name: Check Formatting
+
+    - name: Elixir - Standard Formatting
+      env:
+        MIX_ENV: test
       run: mix format --check-formatted
 
-    - name: Run Credo
+    - name: Elixir - Code Analysis
+      env:
+        MIX_ENV: test
       run: mix credo --strict
 
-    - name: Run Tests
+    - name: Elixir - Run Tests
+      env:
+        MIX_ENV: test
       run: mix test
