@@ -37,7 +37,7 @@ defmodule ExTealDirectUpload.MixProject do
       {:plug, "~> 1.6"},
       {:jason, "~> 1.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false}
     ]
   end
 
