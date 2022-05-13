@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # Test configuration
 config :ex_teal_direct_upload,

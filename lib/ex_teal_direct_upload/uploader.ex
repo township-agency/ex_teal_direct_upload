@@ -46,7 +46,9 @@ defmodule ExTealDirectUpload.Uploader do
 
   defstruct file_name: nil, mimetype: nil, path: nil, acl: nil
 
-  @date_util Application.get_env(:ex_teal_direct_upload, :date_util, ExTealDirectUpload.DateUtil)
+  def date_util do
+    Application.get_env(:ex_teal_direct_upload, :date_util, ExTealDirectUpload.DateUtil)
+  end
 
   @doc """
 
@@ -81,7 +83,7 @@ defmodule ExTealDirectUpload.Uploader do
         policy: policy(upload),
         "X-amz-algorithm": "AWS4-HMAC-SHA256",
         "X-amz-credential": credential(),
-        "X-amz-date": @date_util.today_datetime(),
+        "X-amz-date": date_util().today_datetime(),
         "X-amz-signature": signature(upload),
         acl: upload.acl,
         key: file_path(upload),
@@ -112,7 +114,7 @@ defmodule ExTealDirectUpload.Uploader do
 
   defp signing_key do
     "AWS4#{secret_key()}"
-    |> hmac(@date_util.today_date())
+    |> hmac(date_util().today_date())
     |> hmac(region())
     |> hmac("s3")
     |> hmac("aws4_request")
@@ -120,7 +122,7 @@ defmodule ExTealDirectUpload.Uploader do
 
   defp policy(upload) do
     %{
-      expiration: @date_util.expiration_datetime,
+      expiration: date_util().expiration_datetime,
       conditions: conditions(upload)
     }
     |> Jason.encode!()
@@ -133,7 +135,7 @@ defmodule ExTealDirectUpload.Uploader do
       %{"acl" => upload.acl},
       %{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
       %{"x-amz-credential": credential()},
-      %{"x-amz-date": @date_util.today_datetime()},
+      %{"x-amz-date": date_util().today_datetime()},
       ["starts-with", "$Content-Type", upload.mimetype],
       ["starts-with", "$key", upload.path],
       %{"success_action_status" => "201"}
@@ -141,15 +143,18 @@ defmodule ExTealDirectUpload.Uploader do
   end
 
   defp credential do
-    "#{access_key()}/#{@date_util.today_date()}/#{region()}/s3/aws4_request"
+    "#{access_key()}/#{date_util().today_date()}/#{region()}/s3/aws4_request"
   end
 
   defp file_path(upload) do
     "#{upload.path}/#{upload.file_name}"
   end
 
-  defp hmac(key, data) do
-    :crypto.hmac(:sha256, key, data)
+  # remove when we require OTP 22
+  if System.otp_release() >= "22" do
+    defp hmac(key, data), do: :crypto.mac(:hmac, :sha256, key, data)
+  else
+    defp hmac(key, data), do: :crypto.hmac(:sha256, key, data)
   end
 
   defp access_key, do: Application.get_env(:ex_teal_direct_upload, :aws_access_key)

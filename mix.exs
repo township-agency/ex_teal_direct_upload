@@ -1,7 +1,7 @@
 defmodule ExTealDirectUpload.MixProject do
   use Mix.Project
 
-  @version "0.8.0"
+  @version "0.8.1"
 
   @source "https://github.com/township-agency/ex_teal_direct_upload"
 
@@ -23,7 +23,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      applications: [:logger]
+      applications: [:logger, :crypto]
     ]
   end
 
@@ -31,13 +31,12 @@ defmodule ExTealDirectUpload.MixProject do
   defp deps do
     [
       {:ex_teal, ">= 0.16.0", organization: "motel"},
-      {:ex_aws, "~> 2.0"},
-      {:ex_aws_s3, "~> 2.0"},
+      {:ex_aws, "~> 2.3"},
+      {:ex_aws_s3, "~> 2.3"},
       {:hackney, "~> 1.15"},
       {:plug, "~> 1.6"},
       {:jason, "~> 1.0"},
-      {:credo, "~> 1.0", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.19", only: :dev, runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
