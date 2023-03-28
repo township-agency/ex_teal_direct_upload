@@ -1,13 +1,13 @@
-defmodule ExTealDirectUpload.ImgixArray do
+defmodule ExTealDirectUpload.ImageArray do
   @moduledoc """
-  A component for managing an array of imgix assets
+  A component for managing an array of image assets
   """
   use ExTeal.Field
 
   alias ExTeal.Field
   alias ExTealDirectUpload.FieldHelpers
 
-  def component, do: "imgix-array-field"
+  def component, do: "image-array-field"
 
   def default_sortable, do: false
 

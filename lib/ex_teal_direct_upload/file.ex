@@ -5,7 +5,7 @@ defmodule ExTealDirectUpload.File do
   """
   use ExTeal.Field
 
-  def component, do: "imgix-field"
+  def component, do: "image-field"
 
   def options do
     bucket = Application.get_env(:ex_teal_direct_upload, :aws_s3_bucket)

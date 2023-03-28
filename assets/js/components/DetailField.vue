@@ -1,9 +1,9 @@
 <template>
   <panel-item :field="field">
     <template v-slot:value>
-      <imgix-image-detail v-if="field"
-        :field="field" 
-        :value="field.value" 
+      <direct-upload-image-detail v-if="field"
+        :field="field"
+        :value="field.value"
         class="block pb-4"
       />
     </template>

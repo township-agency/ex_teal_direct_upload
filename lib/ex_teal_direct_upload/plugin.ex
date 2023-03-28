@@ -9,7 +9,7 @@ defmodule ExTealDirectUpload.Plugin do
 
   def router, do: ExTealDirectUpload.Router
 
-  def uri, do: "imgix"
+  def uri, do: "direct-upload"
 
   def scripts, do: [%Script{path: "js/field.js"}]
 end
