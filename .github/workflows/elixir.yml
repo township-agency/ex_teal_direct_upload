@@ -29,7 +29,10 @@ jobs:
 
       - name: Install Mix Dependencies
         if: steps.mix-cache.outputs.cache-hit != 'true'
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY}}
         run: |
+          mix hex.organization auth motel --key $HEX_API_KEY
           mix local.rebar --force
           mix local.hex --force
           mix deps.get
