@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0](https://github.com/township-agency/ex_teal_direct_upload/compare/v0.8.0...v1.0.0) (2023-03-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* refactor to be imgix optional ([#28](https://github.com/township-agency/ex_teal_direct_upload/issues/28))
+
+### Features
+
+* Array Field ([470c6c3](https://github.com/township-agency/ex_teal_direct_upload/commit/470c6c3ed41981c7d6f37df4fd221e6029381e85))
+* refactor to be imgix optional ([#28](https://github.com/township-agency/ex_teal_direct_upload/issues/28)) ([c9e7ec7](https://github.com/township-agency/ex_teal_direct_upload/commit/c9e7ec78c995604f9c7e52f9c9de7ce2c211b0e3))
+
 ## [0.8.1] - 2022-05-13
 
 ### Changes
@@ -54,4 +66,3 @@ plugin from `ExTealDirectUpload.new(%{})` to
 
 ## [0.1.0] - 2018-11-28
 ### Initial Release
-
