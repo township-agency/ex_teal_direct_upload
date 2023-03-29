@@ -1,11 +1,11 @@
 <template>
   <default-field :field="field">
     <template slot="field">
-      <div 
+      <div
         v-if="!listFirst && !maxReached"
-        class="flex border border-40 p-4 items-center" 
+        class="flex border border-40 p-4 items-center"
       >
-        <imgix-image-uploader :field="field" v-model="newItem" :isHorizontal="true" class="w-full flex" />
+        <direct-upload-image-uploader :field="field" v-model="newItem" :isHorizontal="true" class="w-full flex" />
 
         <a
           v-if="!hideCreateButton"
@@ -16,10 +16,10 @@
         </a>
       </div>
 
-      <ul 
-        v-if="items.length" 
+      <ul
+        v-if="items.length"
         ref="itemslist"
-        :style="maxHeight" 
+        :style="maxHeight"
         class="border border-40 py-6 px-4"
       >
         <draggable
@@ -42,7 +42,7 @@
 
               <imgix-image-detail :field="field" v-model="items[index]" class="w-full" :isHorizontal="true" />
 
-              <a 
+              <a
                 class="btn btn-default btn-danger btn-only-icon cursor-pointer ml-3"
                 @click="removeItem(index)"
               >
@@ -52,9 +52,9 @@
           </li>
         </draggable>
       </ul>
-      <div 
+      <div
         v-if="listFirst && !maxReached"
-        class="flex border border-40 p-4 items-center" 
+        class="flex border border-40 p-4 items-center"
       >
 
         <imgix-image-uploader :field="field" v-model="newItem" :isHorizontal="true" class="flex w-full" />
@@ -100,7 +100,7 @@ export default {
     maxReached () {
       return this.maxItems !== false && this.items.length + 1 > this.maxItems;
     },
-    
+
     isDraggable () {
       return this.field.options.draggable || false;
     },

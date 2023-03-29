@@ -5,7 +5,6 @@ defmodule ExTealDirectUpload.FieldHelpers do
 
   def options do
     bucket = Application.get_env(:ex_teal_direct_upload, :aws_s3_bucket)
-    region = Application.get_env(:ex_teal_direct_upload, :aws_region)
     imgix = Application.get_env(:ex_teal_direct_upload, :imgix_source)
     presign_s3_urls = Application.get_env(:ex_teal_direct_upload, :presign_s3_urls)
 
@@ -14,8 +13,8 @@ defmodule ExTealDirectUpload.FieldHelpers do
 
     %{
       imgix_host: imgix,
-      s3_host: "s3.#{region}.amazonaws.com/#{bucket}",
-      type: "imgix",
+      s3_host: "#{bucket}.s3.amazonaws.com",
+      type: "image",
       height: height,
       width: width,
       presign_s3_urls: presign_s3_urls

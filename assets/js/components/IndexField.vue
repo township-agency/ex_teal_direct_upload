@@ -1,8 +1,8 @@
 <template>
   <div class="flex">
     <img
-      v-if="canShowImgix"
-      :src="imgixUrl"
+      v-if="canShowUrl"
+      :src="imageUrl"
       style="object-fit: cover;"
       class="w-8 h-8"
     />
@@ -15,25 +15,28 @@ export default {
   props: {
     resourceName: {
       type: String,
-      default: ""
+      default: "",
     },
     field: {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
 
   computed: {
-    canShowImgix() {
-      return this.field.options.type === "imgix" && this.field.value;
+    canShowUrl() {
+      const { options, value } = this.field;
+      return options.type === "image" && value;
     },
-    imgixUrl() {
-      return `//${this.field.options.imgix_host}/${this.field.value}?w=${
-        this.field.options.width
-      }&h=${this.field.options.height}`;
-    }
-  }
+    imageUrl() {
+      const { options, value} = this.field;
+      if (options.imgix_host) {
+        return `https://${options.imgix_host}/${value}?w=${options.width}&h=${options.height}`;
+      }
+      return `https://${options.s3_host}/${value}`;
+    },
+  },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <default-field :field="field">
     <template slot="field">
-      <imgix-image-uploader :field="field" :value="field.value" v-if="field" @input="handleInput"/>
+      <direct-upload-image-uploader :field="field" :value="field.value" v-if="field" @input="handleInput"/>
     </template>
   </default-field>
 </template>
@@ -16,7 +16,6 @@ export default {
     handleInput(val) {
       this.value = val;
       this.field.value = val;
-
     }
   }
 };

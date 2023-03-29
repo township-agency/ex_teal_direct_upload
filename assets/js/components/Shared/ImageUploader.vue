@@ -2,8 +2,6 @@
   <div>
     <transition name="fade">
       <div v-if="!showInput" :class="layoutClass">
-        <img v-if="showPreview" :src="imgixUrl" class="h-20 block mb-2" />
-
         <div class="my-2 block">
           <a
             v-if="canShowLink"
@@ -25,6 +23,9 @@
           <span class="ml-2" v-if="!canShowLink">
             {{currentLabel}}
           </span>
+        </div>
+        <div class="h-40 flex flex-col" v-if="showPreview">
+          <img :src="imageUrl" class="object-contain min-h-0" />
         </div>
       </div>
     </transition>
@@ -108,18 +109,23 @@ export default {
     hasValue() {
       return Boolean(this.value);
     },
-    imgixUrl() {
-      return `//${this.field.options.imgix_host}/${this.value}`;
+    imageUrl() {
+      const { options } = this.field;
+      const host = options.imgix_host || options.s3_host;
+      return `https://${host}/${this.value}`;
     },
     isImgix() {
-      return true; //this.field.options.type == "imgix";
+      const { options: { type} } = this.field;
+      return type === "imgix" || type === "image";
     },
+
     canShowLink() {
       return this.isImgix || this.canShowS3;
     },
     canShowS3() {
       return !this.field.options.presign_s3 || (this.field.options.presigned_url && !this.value.length > 0);
     },
+
     showPreview() {
       return this.hasValue && this.isImgix && !this.isEditing;
     },
@@ -127,7 +133,7 @@ export default {
     showInput() {
       return this.isEditing || this.isHorizontal;
     },
-    
+
     directUrl() {
       if(this.isImgix) {
         return this.imgixUrl;
@@ -141,9 +147,9 @@ export default {
       return this.isHorizontal ? 'flex justify-between items-center' : ''
     }
   },
+
   watch: {
-    value(newVal, oldVal) {
-      console.log(newVal, !newVal);
+    value(newVal) {
       if (!newVal) {
         this.isEditing = true
         this.label = "No File Selected"
@@ -172,11 +178,12 @@ export default {
         this.file = null;
       });
     },
+
     async signFileForUpload() {
       let { type, name } = this.file;
       this.isUploading = true;
       let { data: response } = await ExTeal.request().post(
-        "/plugins/imgix/sign",
+        "/plugins/direct-upload/sign",
         {
           fileName: name,
           contentType: type
@@ -222,4 +229,4 @@ export default {
     }
   }
 };
-</script> 
+</script>

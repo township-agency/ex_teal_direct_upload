@@ -4,11 +4,11 @@
       slot="value"
       class="text-90"
     >
-      <imgix-image-detail 
+      <direct-upload-image-detail
         v-for="(item, index) in field.value"
         :key="index"
-        :field="field" 
-        :value="item" 
+        :field="field"
+        :value="item"
         class="block pb-4"
       />
     </p>
@@ -33,11 +33,6 @@ export default {
     field: {
       type: Object,
       required: true
-    }
-  },
-  computed: {
-    label () {
-      return this.field.value == true ? 'Yes' : 'No';
     }
   }
 };

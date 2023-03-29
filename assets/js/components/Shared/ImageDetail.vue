@@ -1,6 +1,6 @@
 <template>
-  <p v-if="value" slot="value" class="text-90">
-    <img :src="imgixUrl" class="block mb-2 w-48" />
+  <p v-if="field.value" slot="value" class="text-90">
+    <img :src="imageUrl" class="block mb-2 w-48" v-if="imageUrl"/>
     <a
       :href="directUrl"
       target="_blank"
@@ -17,25 +17,23 @@ export default {
     field: {
       type: Object,
       required: true
-    },
-    value: {
-      type: String,
-      required: true
     }
   },
   computed: {
-    imgixUrl() {
-      return `//${this.field.options.imgix_host}/${this.value}`;
+    imageUrl() {
+      const { options, value } = this.field;
+      const host = options.imgix_host || options.s3_host;
+      if (options.type === 'file') return false;
+      return `https://${host}/${value}`;
     },
     directUrl() {
-      if(this.isImgix) {
-        return this.imgixUrl;
-      }
-      if(this.field.options.presign_s3) {
+      const { options, value } = this.field;
+      const host = options.imgix_host || options.s3_host;
+      if(options.presign_s3) {
         return this.field.options.presigned_url;
       }
-      
-      return `//${this.field.options.s3_host}/${this.value}`;
+
+      return `https://${host}/${value}`;
     }
   }
 };
