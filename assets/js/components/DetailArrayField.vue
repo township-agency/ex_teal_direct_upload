@@ -34,11 +34,6 @@ export default {
       type: Object,
       required: true
     }
-  },
-  computed: {
-    label () {
-      return this.field.value == true ? 'Yes' : 'No';
-    }
   }
 };
 </script>
