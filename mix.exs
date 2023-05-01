@@ -31,7 +31,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_teal, ">= 0.19.0", organization: "motel"},
+      {:ex_teal, ">= 0.20.0"},
       {:ex_aws, "~> 2.4"},
       {:ex_aws_s3, "~> 2.4"},
       {:hackney, "~> 1.15"},
@@ -53,7 +53,6 @@ defmodule ExTealDirectUpload.MixProject do
         "Scott Taylor"
       ],
       licenses: ["MIT"],
-      organization: "motel",
       links: %{"GitHub" => @source}
     ]
   end
