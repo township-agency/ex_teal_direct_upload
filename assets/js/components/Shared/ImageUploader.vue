@@ -24,8 +24,8 @@
             {{currentLabel}}
           </span>
         </div>
-        <div class="h-40 flex flex-col" v-if="showPreview">
-          <img :src="imageUrl" class="object-contain min-h-0" />
+        <div class="h-40" v-if="showPreview">
+          <img :src="imageUrl" class="object-contain min-h-0 max-h-full" />
         </div>
       </div>
     </transition>
@@ -116,7 +116,7 @@ export default {
     },
     isImgix() {
       const { options: { type} } = this.field;
-      return type === "imgix" || type === "image";
+      return type === "image";
     },
 
     canShowLink() {
@@ -136,7 +136,7 @@ export default {
 
     directUrl() {
       if(this.isImgix) {
-        return this.imgixUrl;
+        return this.imageUrl;
       }
       if(this.field.options.presign_s3) {
         return this.field.options.presigned_url;
