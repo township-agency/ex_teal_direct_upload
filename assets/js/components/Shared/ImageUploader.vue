@@ -12,16 +12,22 @@
             <icon type="link" class="mr-2" /> <span>Link</span>
           </a>
 
-          <a class="btn btn-default btn-secondary btn-icon-inline cursor" @click="showEdit">
+          <a
+            class="btn btn-default btn-secondary btn-icon-inline cursor"
+            @click="showEdit"
+          >
             <icon type="edit" class="mr-2" /> <span>Edit</span>
           </a>
 
-          <a class="btn btn-default btn-danger btn-icon-inline" @click="deleteFile">
+          <a
+            class="btn btn-default btn-danger btn-icon-inline"
+            @click="deleteFile"
+          >
             <icon type="delete" class="mr-2" /> <span>Delete</span>
           </a>
 
           <span class="ml-2" v-if="!canShowLink">
-            {{currentLabel}}
+            {{ currentLabel }}
           </span>
         </div>
         <div class="h-40" v-if="showPreview">
@@ -30,7 +36,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="showInput" class="form-file mr-4 h-20 flex items-center" >
+      <div v-if="showInput" class="form-file mr-4 h-20 flex items-center">
         <input
           ref="fileField"
           :id="idAttr"
@@ -54,11 +60,10 @@
 </template>
 
 <script>
-import axios from "axios";
 import SmoothReflow from "vue-smooth-reflow";
 import { HandlesValidationErrors } from "ex-teal-js";
 export default {
-  name: 'image-uploader',
+  name: "image-uploader",
   mixins: [HandlesValidationErrors, SmoothReflow],
   props: {
     value: String,
@@ -67,7 +72,7 @@ export default {
     isHorizontal: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   data: () => ({
     file: null,
@@ -115,7 +120,9 @@ export default {
       return `https://${host}/${this.value}`;
     },
     isImgix() {
-      const { options: { type} } = this.field;
+      const {
+        options: { type },
+      } = this.field;
       return type === "image";
     },
 
@@ -123,7 +130,10 @@ export default {
       return this.isImgix || this.canShowS3;
     },
     canShowS3() {
-      return !this.field.options.presign_s3 || (this.field.options.presigned_url && !this.value.length > 0);
+      return (
+        !this.field.options.presign_s3 ||
+        (this.field.options.presigned_url && !this.value.length > 0)
+      );
     },
 
     showPreview() {
@@ -135,33 +145,32 @@ export default {
     },
 
     directUrl() {
-      if(this.isImgix) {
+      if (this.isImgix) {
         return this.imageUrl;
       }
-      if(this.field.options.presign_s3) {
+      if (this.field.options.presign_s3) {
         return this.field.options.presigned_url;
       }
       return `//${this.field.options.s3_host}/${this.value}`;
     },
     layoutClass() {
-      return this.isHorizontal ? 'flex justify-between items-center' : ''
-    }
+      return this.isHorizontal ? "flex justify-between items-center" : "";
+    },
   },
 
   watch: {
     value(newVal) {
       if (!newVal) {
-        this.isEditing = true
-        this.label = "No File Selected"
-        this.fileName = ""
+        this.isEditing = true;
+        this.label = "No File Selected";
+        this.fileName = "";
       } else {
-
       }
-    }
+    },
   },
   mounted() {
     this.$smoothReflow();
-    if(this.value === null) {
+    if (this.value === null) {
       this.isEditing = true;
     }
   },
@@ -174,47 +183,25 @@ export default {
       let fileName = path.match(/[^\\/]*$/)[0];
       this.fileName = fileName;
       this.file = this.$refs.fileField.files[0];
-      this.signFileForUpload().then(() => {
-        this.file = null;
+      this.isUploading = true;
+      ExTealDirectUpload.uploadFile(this.file, (progress) => {
+        var percentCompleted = Math.round(
+          (progress.loaded * 100) / progress.total
+        );
+        this.uploadProgress = percentCompleted;
+      }).then(({ value, status }) => {
+        if (status === 201) {
+          this.file = null;
+          this.isUploading = false;
+          this.uploadProgress = 0;
+          this.label = `${this.fileName} Uploaded`;
+          this.isEditing = false;
+          this.$emit("input", value);
+          return;
+        }
       });
     },
 
-    async signFileForUpload() {
-      let { type, name } = this.file;
-      this.isUploading = true;
-      let { data: response } = await ExTeal.request().post(
-        "/plugins/direct-upload/sign",
-        {
-          fileName: name,
-          contentType: type
-        }
-      );
-      let config = {
-        onUploadProgress: progressEvent => {
-          var percentCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          this.uploadProgress = percentCompleted;
-        },
-        headers: { "Content-Type": "multipart/form-data" }
-      };
-      let fd = new FormData();
-      let signature = response.signature;
-      Object.keys(signature).forEach(key => {
-        fd.append(key, signature[key]);
-      });
-      fd.append("file", this.file);
-      let s3Response = await axios.post(response.postEndpoint, fd, config);
-      if (s3Response.status == 201) {
-        this.file = null;
-        this.isUploading = false;
-        this.uploadProgress = 0;
-        this.label = `${this.fileName} Uploaded`;
-        this.isEditing = false;
-        this.$emit('input', signature.key)
-        return;
-      }
-    },
     showEdit() {
       this.isEditing = true;
     },
@@ -222,11 +209,11 @@ export default {
       this.isEditing = false;
     },
     deleteFile() {
-      this.$emit('input', null)
+      this.$emit("input", null);
       this.file = null;
       this.isEditing = true;
       this.label = "No File Selected";
-    }
-  }
+    },
+  },
 };
 </script>
