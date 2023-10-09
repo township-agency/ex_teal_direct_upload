@@ -12,4 +12,10 @@ defmodule ExTealDirectUpload.Plugin do
   def uri, do: "direct-upload"
 
   def scripts, do: [%Script{path: "js/field.js"}]
+
+  def js_config,
+    do: %{
+      imgix_source: Application.get_env(:ex_teal_direct_upload, :imgix_source),
+      aws_s3_bucket: Application.get_env(:ex_teal_direct_upload, :aws_s3_bucket)
+    }
 end

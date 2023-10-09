@@ -31,7 +31,7 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ex_teal, ">= 0.20.0"},
+      {:ex_teal, ">= 0.27.0"},
       {:ex_aws, "~> 2.4"},
       {:ex_aws_s3, "~> 2.4"},
       {:hackney, "~> 1.15"},
