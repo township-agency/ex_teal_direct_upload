@@ -6,7 +6,7 @@ defmodule ExTealDirectUpload.MixProject do
   def project do
     [
       app: :ex_teal_direct_upload,
-      version: "1.0.2",
+      version: "1.1.0",
       elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       build_embedded: Mix.env() == :prod,
