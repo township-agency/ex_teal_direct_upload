@@ -1,5 +1,5 @@
 <template>
-  <default-field :field="field">
+  <default-field :field="field" :errors="errors">
     <template slot="field">
       <direct-upload-image-uploader :field="field" :value="field.value" v-if="field" @input="handleInput"/>
     </template>
