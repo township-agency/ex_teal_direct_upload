@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.1.0...v1.1.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* Form Fields have errors that should be passed to the default field wrapper ([#56](https://github.com/township-agency/ex_teal_direct_upload/issues/56)) ([e36bef4](https://github.com/township-agency/ex_teal_direct_upload/commit/e36bef42647a6107baa39115662639b9ffc4ece9))
+
 ## [1.1.0](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.0.2...v1.1.0) (2023-10-09)
 
 
