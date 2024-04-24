@@ -11,7 +11,7 @@ defmodule ExTealDirectUpload.Plugin do
 
   def uri, do: "direct-upload"
 
-  def scripts, do: [%Script{path: "js/field.js"}]
+  def scripts, do: [%Script{path: "js/main.js"}]
 
   def js_config,
     do: %{
