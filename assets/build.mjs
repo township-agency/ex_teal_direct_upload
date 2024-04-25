@@ -13,7 +13,7 @@ const ctx = await ESBuild.context({
     'vue'
   ],
   bundle: true,
-  outdir: "../priv/static/",
+  outdir: "../priv/static/js/",
   plugins: [vuePlugin()],
   define: {
     "process.env.NODE_ENV": JSON.stringify(env),
