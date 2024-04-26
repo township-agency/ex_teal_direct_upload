@@ -1,4 +1,14 @@
 import axios from "axios";
+import ImageDetail from "./components/Shared/ImageDetail.vue";
+import ImageUploader from "./components/Shared/ImageUploader.vue";
+
+import DetailArrayField from "./components/DetailArrayField.vue";
+import FormArrayField from "./components/FormArrayField.vue";
+import IndexArrayField from "./components/IndexArrayField.vue";
+
+import DetailField from "./components/DetailField.vue";
+import FormField from "./components/FormField.vue";
+import IndexField from "./components/IndexField.vue";
 
 ExTeal.booting((Vue, router) => {
   window.ExTealDirectUpload = {};
@@ -38,15 +48,14 @@ ExTeal.booting((Vue, router) => {
     return { value: path, url: updatedUrl, status };
   }
 
-  Vue.component('direct-upload-image-detail', require('./components/Shared/ImageDetail').default);
-  Vue.component('direct-upload-image-uploader', require('./components/Shared/ImageUploader').default);
+  Vue.component('direct-upload-image-detail', ImageDetail);
+  Vue.component('direct-upload-image-uploader', ImageUploader);
 
+  Vue.component('detail-image-array-field', DetailArrayField);
+  Vue.component('form-image-array-field', FormArrayField);
+  Vue.component('index-image-array-field', IndexArrayField);
 
-  Vue.component('detail-image-array-field', require('./components/DetailArrayField').default);
-  Vue.component('form-image-array-field', require('./components/FormArrayField').default);
-  Vue.component('index-image-array-field', require('./components/IndexArrayField').default);
-
-  Vue.component('detail-image-field', require('./components/DetailField').default);
-  Vue.component('form-image-field', require('./components/FormField').default);
-  Vue.component('index-image-field', require('./components/IndexField').default);
+  Vue.component('detail-image-field', DetailField);
+  Vue.component('form-image-field', FormField);
+  Vue.component('index-image-field', IndexField);
 });

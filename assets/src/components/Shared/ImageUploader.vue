@@ -81,6 +81,7 @@ export default {
     isEditing: false,
     uploadProgress: 0,
     isUploading: false,
+    uuid: crypto.randomUUID(),
   }),
   computed: {
     /**
@@ -106,7 +107,7 @@ export default {
      * @return {[type]} [description]
      */
     labelFor() {
-      return `file-${this.field.attribute}`;
+      return `file-${this.field.attribute}-${this.uuid}`;
     },
     /**
      * Determine whether the field has a value
