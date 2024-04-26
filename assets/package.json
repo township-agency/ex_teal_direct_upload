@@ -2,6 +2,7 @@
   "name": "ex_teal_direct_upload",
   "private": true,
   "description": "Direct Upload Files to S3 in ExTeal",
+  "version": "1.0.0",
   "scripts": {
     "build": "node ./build.mjs",
     "watch": "node ./build.mjs --watch",
@@ -10,9 +11,9 @@
   "dependencies": {
     "axios": "^1.6.8",
     "ex-teal-js": "^1.0.4",
-    "vue": "^2.6.10",
+    "vue": "2.6.12",
     "vue-smooth-reflow": "^0.1.12",
-    "vue-template-compiler": "2.6.10",
+    "vue-template-compiler": "2.6.12",
     "vuedraggable": "^2.24.0"
   },
   "devDependencies": {

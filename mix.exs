@@ -23,7 +23,6 @@ defmodule ExTealDirectUpload.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      applications: [:logger, :crypto],
       extra_applications: [:plug, :ex_teal, :ex_aws, :ex_aws_s3]
     ]
   end
