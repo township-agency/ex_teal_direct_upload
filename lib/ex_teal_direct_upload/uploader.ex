@@ -51,44 +51,41 @@ defmodule ExTealDirectUpload.Uploader do
   end
 
   @doc """
+  Generates a pre-signed URL for uploading a file to S3.
 
-  Returns a map with `url` and `credentials` keys.
+  This function takes an `Uploader` struct as an argument and returns a map containing the pre-signed URL, content type, URL, and path of the file to be uploaded.
 
-  - `url` - the form action URL
-  - `credentials` - name/value pairs for hidden input fields
+  The pre-signed URL is generated using the `ExAws.S3.presigned_url/5` function with a default expiration time of 3600 seconds (1 hour). The `query_params` map is used to specify the AWS4-HMAC-SHA256 algorithm for signing the request.
 
-  ## Examples
+  The returned map includes the following keys:
 
-      iex> %ExTealDirectUpload.Uploader{file_name: "image.jpg", mimetype: "image/jpeg", path: "path/to/file"}
-      ...> |> ExTealDirectUpload.Uploader.presigned
-      ...> |> Map.get(:postEndpoint)
-      "https://s3-bucket.s3.amazonaws.com"
+  - `presign_url`: The pre-signed URL for the upload.
+  - `content_type`: The MIME type of the file being uploaded.
+  - `url`: The full URL of the file in the S3 bucket.
+  - `path`: The path of the file in the S3 bucket.
 
-      iex> %ExTealDirectUpload.Uploader{file_name: "image.jpg", mimetype: "image/jpeg", path: "path/to/file"}
-      ...> |> ExTealDirectUpload.Uploader.presigned
-      ...> |> Map.get(:signature) |> Map.get(:"X-amz-credential")
-      "123abc/20170101/us-east-1/s3/aws4_request"
-
-      iex> %ExTealDirectUpload.Uploader{file_name: "image.jpg", mimetype: "image/jpeg", path: "path/to/file"}
-      ...> |> ExTealDirectUpload.Uploader.presigned
-      ...> |> Map.get(:signature) |> Map.get(:key)
-      "path/to/file/image.jpg"
-
+  This function is used to generate the necessary information for a client-side multipart POST to S3.
   """
   def presigned(%Uploader{} = upload) do
+    query_params = %{
+      "X-Amz-Algorithm" => "AWS4-HMAC-SHA256"
+    }
+
+    path = file_path(upload)
+
+    {:ok, url} =
+      :s3
+      |> ExAws.Config.new([])
+      |> ExAws.S3.presigned_url(:put, bucket(), path,
+        expires_in: 3600,
+        query_params: query_params
+      )
+
     %{
-      postEndpoint: "https://#{bucket()}.s3.amazonaws.com",
-      signature: %{
-        "Content-Type": upload.mimetype,
-        policy: policy(upload),
-        "X-amz-algorithm": "AWS4-HMAC-SHA256",
-        "X-amz-credential": credential(),
-        "X-amz-date": date_util().today_datetime(),
-        "X-amz-signature": signature(upload),
-        acl: upload.acl,
-        key: file_path(upload),
-        success_action_status: "201"
-      }
+      presign_url: url,
+      content_type: upload.mimetype,
+      url: "https://#{bucket()}.s3.amazonaws.com/#{path}",
+      path: path
     }
   end
 
@@ -106,59 +103,9 @@ defmodule ExTealDirectUpload.Uploader do
     |> Jason.encode!()
   end
 
-  defp signature(upload) do
-    signing_key()
-    |> hmac(policy(upload))
-    |> Base.encode16(case: :lower)
-  end
-
-  defp signing_key do
-    "AWS4#{secret_key()}"
-    |> hmac(date_util().today_date())
-    |> hmac(region())
-    |> hmac("s3")
-    |> hmac("aws4_request")
-  end
-
-  defp policy(upload) do
-    %{
-      expiration: date_util().expiration_datetime,
-      conditions: conditions(upload)
-    }
-    |> Jason.encode!()
-    |> Base.encode64()
-  end
-
-  defp conditions(upload) do
-    [
-      %{"bucket" => bucket()},
-      %{"acl" => upload.acl},
-      %{"x-amz-algorithm": "AWS4-HMAC-SHA256"},
-      %{"x-amz-credential": credential()},
-      %{"x-amz-date": date_util().today_datetime()},
-      ["starts-with", "$Content-Type", upload.mimetype],
-      ["starts-with", "$key", upload.path],
-      %{"success_action_status" => "201"}
-    ]
-  end
-
-  defp credential do
-    "#{access_key()}/#{date_util().today_date()}/#{region()}/s3/aws4_request"
-  end
-
   defp file_path(upload) do
     "#{upload.path}/#{upload.file_name}"
   end
 
-  # remove when we require OTP 22
-  if System.otp_release() >= "22" do
-    defp hmac(key, data), do: :crypto.mac(:hmac, :sha256, key, data)
-  else
-    defp hmac(key, data), do: :crypto.hmac(:sha256, key, data)
-  end
-
-  defp access_key, do: Application.get_env(:ex_teal_direct_upload, :aws_access_key)
-  defp secret_key, do: Application.get_env(:ex_teal_direct_upload, :aws_secret_key)
   defp bucket, do: Application.get_env(:ex_teal_direct_upload, :aws_s3_bucket)
-  defp region, do: Application.get_env(:ex_teal_direct_upload, :aws_region) || "us-east-1"
 end
