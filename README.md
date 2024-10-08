@@ -17,8 +17,6 @@ Configure `ex_teal_direct_upload`:
 
 ```elixir
 config :ex_teal_direct_upload,
-  aws_access_key: System.get_env("AWS_ACCESS_KEY_ID"),
-  aws_secret_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
   aws_s3_bucket: System.get_env("AWS_S3_BUCKET"),
   aws_region: System.get_env("AWS_REGION") || "us-east-1",
   imgix_source: System.get_env("IMGIX_SOURCE") # optional
@@ -32,6 +30,9 @@ def plugins,
     ExTealDirectUpload.Plugin.new(%{})
   ]
 ```
+
+Direct Upload delegates responsibilities for generating presigned urls to the `ex_aws` and `ex_aws_s3` libraries.  Ensure that `ExAws` is configured
+correctly.
 
 ## Using Direct Upload
 

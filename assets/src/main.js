@@ -15,7 +15,6 @@ ExTeal.booting((Vue, router) => {
 
   ExTealDirectUpload.uploadFile = async (file, progressCallback) => {
     let { type, name } = file;
-    console.log({type, name})
     let { data: response } = await ExTeal.request().post(
       "/plugins/direct-upload/sign",
       {
@@ -29,14 +28,11 @@ ExTeal.booting((Vue, router) => {
       responseType: "document"
     };
     let fd = new FormData();
-    let signature = response.signature;
-    Object.keys(signature).forEach(key => {
-      fd.append(key, signature[key]);
-    });
     fd.append("file", file);
-    const s3Response = await axios.post(response.postEndpoint, fd, config);
-    const url = s3Response.data.getElementsByTagName("Location")[0].childNodes[0].nodeValue;
-    const path = s3Response.data.getElementsByTagName('Key')[0].childNodes[0].nodeValue;
+    const s3Response = await axios.put(response.presign_url, fd, config);
+    console.log({s3Response, response})
+    const url = response.url;
+    const path = response.path;
     const status = s3Response.status;
 
     const jsConfig = window.ExTeal.config.plugins.find((i) => i.uri == 'direct-upload').js_config
