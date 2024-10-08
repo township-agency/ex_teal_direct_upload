@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.1.2...v1.2.0) (2024-10-08)
+
+
+### Features
+
+* Cleanup CI and Delegate signing to ExAws ([#78](https://github.com/township-agency/ex_teal_direct_upload/issues/78)) ([e7dc826](https://github.com/township-agency/ex_teal_direct_upload/commit/e7dc8263514ba9681286eda94b2871b3870aaf8b))
+
 ## [1.1.2](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.1.1...v1.1.2) (2024-04-26)
 
 
