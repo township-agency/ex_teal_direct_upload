@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.1](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.2.0...v1.2.1) (2024-10-09)
+
+
+### Bug Fixes
+
+* revert presigned url generation, use post instead ([4d27087](https://github.com/township-agency/ex_teal_direct_upload/commit/4d270871c3e7d4fa8cce3e02b49084118f669b18))
+
 ## [1.2.0](https://github.com/township-agency/ex_teal_direct_upload/compare/v1.1.2...v1.2.0) (2024-10-08)
 
 
