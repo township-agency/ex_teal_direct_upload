@@ -67,25 +67,22 @@ defmodule ExTealDirectUpload.Uploader do
   This function is used to generate the necessary information for a client-side multipart POST to S3.
   """
   def presigned(%Uploader{} = upload) do
-    query_params = %{
-      "X-Amz-Algorithm" => "AWS4-HMAC-SHA256"
-    }
-
     path = file_path(upload)
 
-    {:ok, url} =
+    %{url: url, fields: fields} =
       :s3
       |> ExAws.Config.new([])
-      |> ExAws.S3.presigned_url(:put, bucket(), path,
+      |> ExAws.S3.presigned_post(bucket(), path,
         expires_in: 3600,
-        query_params: query_params
+        acl: upload.acl,
+        headers: [{"Content-Type", upload.mimetype}]
       )
 
     %{
-      presign_url: url,
-      content_type: upload.mimetype,
-      url: "https://#{bucket()}.s3.amazonaws.com/#{path}",
-      path: path
+      url: url,
+      fields: Map.merge(fields, %{"acl" => upload.acl}),
+      path: path,
+      file_url: "https://#{bucket()}.s3.amazonaws.com/#{path}"
     }
   end
 

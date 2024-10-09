@@ -28,10 +28,13 @@ ExTeal.booting((Vue, router) => {
       responseType: "document"
     };
     let fd = new FormData();
+    Object.keys(response.fields).forEach(field => {
+      fd.append(field, response.fields[field]);
+    });
     fd.append("file", file);
-    const s3Response = await axios.put(response.presign_url, fd, config);
-    console.log({s3Response, response})
-    const url = response.url;
+    fd.append("success_action_status", "201");
+    const s3Response = await axios.post(response.url, fd, config);
+    const url = response.file_url;
     const path = response.path;
     const status = s3Response.status;
 

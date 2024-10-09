@@ -191,7 +191,7 @@ export default {
         );
         this.uploadProgress = percentCompleted;
       }).then(({ value, status }) => {
-        if (status === 200) {
+        if (status >= 200 && status < 300) {
           this.file = null;
           this.isUploading = false;
           this.uploadProgress = 0;
