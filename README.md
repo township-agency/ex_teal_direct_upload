@@ -19,7 +19,8 @@ Configure `ex_teal_direct_upload`:
 config :ex_teal_direct_upload,
   aws_s3_bucket: System.get_env("AWS_S3_BUCKET"),
   aws_region: System.get_env("AWS_REGION") || "us-east-1",
-  imgix_source: System.get_env("IMGIX_SOURCE") # optional
+  imgix_source: System.get_env("IMGIX_SOURCE"), # optional
+  aws_role_arn: System.get_env("AWS_ROLE_ARN"), # only include if using aws sts
 ```
 
 and add it to your list of plugins in the `ex_teal` manifest:
@@ -33,6 +34,9 @@ def plugins,
 
 Direct Upload delegates responsibilities for generating presigned urls to the `ex_aws` and `ex_aws_s3` libraries.  Ensure that `ExAws` is configured
 correctly.
+
+To use AWS STS, add the `aws_role_arn` to your application's config for
+ex_teal_direct_upload.
 
 ## Using Direct Upload
 
