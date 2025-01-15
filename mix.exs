@@ -33,7 +33,7 @@ defmodule ExTealDirectUpload.MixProject do
       {:ex_teal, ">= 0.27.0"},
       {:ex_aws, "~> 2.5"},
       {:ex_aws_s3, "~> 2.5"},
-      {:ex_aws_sts, "~> 2.2"},
+      {:ex_aws_sts, "~> 2.2", optional: true},
       {:hackney, "~> 1.15"},
       {:sweet_xml, "~> 0.6"},
       {:configparser_ex, "~> 4.0"},

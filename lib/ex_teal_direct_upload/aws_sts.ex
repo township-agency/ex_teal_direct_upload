@@ -8,27 +8,21 @@ defmodule ExTealDirectUpload.AwsSts do
   @credentials_duration 3_600
 
   def config do
-    case assume_role() do
-      {:ok, %{body: credentials}} ->
-        ExAws.Config.new(:s3,
-          access_key_id: credentials.access_key_id,
-          secret_access_key: credentials.secret_access_key,
-          security_token: credentials.session_token,
-          region: region()
-        )
-
-      _ ->
-        {:error, :invalid_role_request}
+    with true <- Code.ensure_loaded?(ExAws.STS),
+         {:ok, %{body: credentials}} <- assume_role() do
+      ExAws.Config.new(:s3,
+        access_key_id: credentials.access_key_id,
+        secret_access_key: credentials.secret_access_key,
+        security_token: credentials.session_token,
+        region: region()
+      )
+    else
+      false -> {:error, :missing_ex_aws_sts_dependency}
+      _ -> {:error, :invalid_role_request}
     end
   end
 
-  def enabled? do
-    case role_arn() do
-      nil -> false
-      "" -> false
-      _ -> true
-    end
-  end
+  def enabled?, do: Application.get_env(:ex_teal_direct_upload, :use_aws_sts, false)
 
   defp assume_role,
     do:
