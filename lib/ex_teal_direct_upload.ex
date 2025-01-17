@@ -1,8 +1,10 @@
 defmodule ExTealDirectUpload do
   @moduledoc false
 
+  alias ExTealDirectUpload.AwsSts
+
   def signed_url_for(object_path) do
-    config = ExAws.Config.new(:s3, [])
+    config = if AwsSts.enabled?(), do: AwsSts.config(), else: ExAws.Config.new(:s3, [])
     ExAws.S3.presigned_url(config, :get, bucket(), object_path, expires_in: expires_in())
   end
 

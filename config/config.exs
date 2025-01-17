@@ -10,7 +10,8 @@ config :ex_teal_direct_upload,
   imgix_source: System.get_env("IMGIX_SOURCE"),
   aws_acl: "public-read",
   presign_s3_urls: false,
-  presign_interval: 3600
+  presign_interval: 3600,
+  use_aws_sts: false
 
 if Mix.env() == :test do
   import_config "#{Mix.env()}.exs"

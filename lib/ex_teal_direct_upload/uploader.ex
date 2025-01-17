@@ -1,5 +1,5 @@
 defmodule ExTealDirectUpload.Uploader do
-  alias ExTealDirectUpload.Uploader
+  alias ExTealDirectUpload.{AwsSts, Uploader}
 
   @moduledoc """
 
@@ -69,9 +69,10 @@ defmodule ExTealDirectUpload.Uploader do
   def presigned(%Uploader{} = upload) do
     path = file_path(upload)
 
+    config = if AwsSts.enabled?(), do: AwsSts.config(), else: ExAws.Config.new(:s3, [])
+
     %{url: url, fields: fields} =
-      :s3
-      |> ExAws.Config.new([])
+      config
       |> ExAws.S3.presigned_post(bucket(), path,
         expires_in: 3600,
         acl: upload.acl,
